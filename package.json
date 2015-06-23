@@ -1,0 +1,31 @@
+{
+  "version": "0.0.0",
+  "license": "MIT",
+  "name": "query-result",
+  "description": "",
+  "homepage": "https://github.com/WebReflection/query-result",
+  "keywords": [],
+  "author": {
+    "name": "Andrea Giammarchi",
+    "web": "http://webreflection.blogspot.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/WebReflection/query-result.git"
+  },
+  "main": "./build/query-result.node.js",
+  "scripts": {
+    "test": "node test/.test.js",
+    "test": "phantomjs testrunner.js",
+    "web": "IP=0.0.0.0 node node_modules/polpetta"
+  },
+  "devDependencies": {
+    "wru": "~0.2.x",
+    "uglify-js": "1.x",
+    "jshint": "~2.x",
+    "polpetta": "~0.3.x",
+    "phantomjs": "~1.x",
+    "browserify": "~0.0.0",
+    "watchify": "~0.0.0"
+  }
+}
