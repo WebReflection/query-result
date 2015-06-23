@@ -1,4 +1,4 @@
-console.log('Loading: test.html');
+console.log('Loading: index.html');
 var page = require('webpage').create();
 var url = 'index.html';
 page.open(url, function (status) {
