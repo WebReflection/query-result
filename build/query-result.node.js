@@ -20,7 +20,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 */
-var $ = (function (O, A) {'use strict';
+module.exports = (function (O, A) {'use strict';
   function $(CSS, parentNode) {
     return typeof CSS === 'string' ?
       search(CSS.split(splitter), parentNode || document) :
@@ -128,4 +128,3 @@ var $ = (function (O, A) {'use strict';
     })
   ;
 }(Object, Array.prototype));
-module.exports = $;

@@ -1,4 +1,4 @@
-var $ = (function (O, A) {'use strict';
+(function (O, A) {'use strict';
   function $(CSS, parentNode) {
     return typeof CSS === 'string' ?
       search(CSS.split(splitter), parentNode || document) :
