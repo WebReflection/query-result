@@ -1,13 +1,12 @@
 //remove:
-var main = require('../build/query-result.node.js');
+var $ = require('../build/query-result.node.js');
 //:remove
 
 wru.test([
   {
     name: "main",
     test: function () {
-      wru.assert(typeof main == "object");
-      // wru.assert(0);
+      wru.assert(typeof $ == "function");
     }
   }
 ]);
