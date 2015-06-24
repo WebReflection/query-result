@@ -1,51 +1,258 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640">
+
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen">
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
     <title>Query-result by WebReflection</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/github-dark.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
   </head>
+
   <body>
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/WebReflection/query-result">View On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/WebReflection/query-result/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/WebReflection/query-result/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
+    <a id="forkme_banner" href="https://github.com/WebReflection/query-result">View on GitHub</a>
+    <div class="shell">
 
-    <div class="wrapper">
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Query-result</h1>
+            <h2>Rethinking the $</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
 
-      <section>
-        <div id="title">
-          <h1>Query-result</h1>
-          <p>Rethinking the $</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/WebReflection">WebReflection</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
-        </div>
-
-        <h1>
-<a id="query-result" class="anchor" href="#query-result" aria-hidden="true"><span class="octicon octicon-link"></span></a>query-result</h1>
-
-<p><a href="http://travis-ci.org/WebReflection/query-result"><img src="https://secure.travis-ci.org/WebReflection/query-result.png" alt="build status"></a></p>
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/WebReflection/query-result/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/WebReflection/query-result/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
       </section>
 
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h1>
+<a id="queryresult-rethinking-the-" class="anchor" href="#queryresult-rethinking-the-" aria-hidden="true"><span class="octicon octicon-link"></span></a>QueryResult, rethinking the <code>$()</code>
+</h1>
+
+<p><a href="http://travis-ci.org/WebReflection/query-result"><img src="https://secure.travis-ci.org/WebReflection/query-result.png" alt="build status"></a></p>
+
+<h3>
+<a id="what-is-queryresult" class="anchor" href="#what-is-queryresult" aria-hidden="true"><span class="octicon octicon-link"></span></a>What is QueryResult?</h3>
+
+<p>We all would like to simplify what is the most common operation when dealing with any document: elements selection through CSS queries.</p>
+
+<p>We also would like to have the ability to attach or remove listeners without writing
+verbose names such <code>addEventListener</code> when <code>on</code> would work just fine.</p>
+
+<p>Finally, we'd like to be able to dispatch Events with the ability to pass arbitrary data,
+like it's already possible via <code>CustomEvent</code> constructor.</p>
+
+<p>Instead of using some limited, quite obtrusive, and not fully cross platform code like
+<a href="https://gist.github.com/paulirish/12fb951a8b893a454b32">the following one</a> proposed by Paul Irish, we can use a much better approach, we can subclass Array for real.</p>
+
+<p>Not only this is a technique that will be incrementally available as soon
+as browsers will bring ES6 features in their engines, it also gives us the ability
+to extend such subclass the way we want without modifying global properties and objects,
+keeping the environment clean and friendly.</p>
+
+<p>With <code>QueryResult</code> we have backward compatibility down to older IE,
+the core ability to add, remove, and dispatch events,
+plus an easy way to extend the prototype, with the ability to work
+with the resulting collection as a regular <code>Array</code> without losing the subclass.</p>
+
+<div class="highlight highlight-js"><pre>$(<span class="pl-s"><span class="pl-pds">'</span>input[required]<span class="pl-pds">'</span></span>)
+  <span class="pl-c">// regular Array methods available</span>
+  .filter(<span class="pl-k">function</span> (<span class="pl-smi">el</span>) {
+    <span class="pl-k">return</span> <span class="pl-k">!</span>el.<span class="pl-c1">value</span>.trim();
+  })
+  <span class="pl-c">// add a specific class to the filtered list</span>
+  .map(<span class="pl-k">function</span> (<span class="pl-smi">el</span>) {
+    el.classList.<span class="pl-c1">add</span>(<span class="pl-s"><span class="pl-pds">'</span>please-fill-me<span class="pl-pds">'</span></span>);
+  })
+  <span class="pl-c">// still on an instance of QueryResult</span>
+  <span class="pl-c">// so we could add a listener to each element</span>
+  .on(<span class="pl-s"><span class="pl-pds">'</span>focus<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">el</span>) {
+    el.classList.remove(<span class="pl-s"><span class="pl-pds">'</span>please-fill-me<span class="pl-pds">'</span></span>);
+  })
+  <span class="pl-c">// with chainability included</span>
+  .on(<span class="pl-s"><span class="pl-pds">'</span>blur<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">el</span>) {
+    <span class="pl-k">if</span> (<span class="pl-k">!</span>el.<span class="pl-c1">value</span>.trim()) {
+      el.classList.<span class="pl-c1">add</span>(<span class="pl-s"><span class="pl-pds">'</span>please-fill-me<span class="pl-pds">'</span></span>);
+    }
+  })
+;</pre></div>
+
+<h3>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h3>
+
+<p>The first basic improvements over most alternative, is the usage of <a href="http://www.w3.org/TR/2015/WD-dom-20150428/#elements"><strong>query</strong> and <strong>queryAll</strong></a> methods to query relatively from an element, whenever these are available.</p>
+
+<p>This avoids surprises with selectors that could match elements outside the one we are searching in.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// common alternatives</span>
+<span class="pl-c">// will return every p</span>
+<span class="pl-c">// even if not inside the node</span>
+$(<span class="pl-s"><span class="pl-pds">'</span>body p<span class="pl-pds">'</span></span>, node)
+
+<span class="pl-c">// QuerySelector won't find anything</span>
+$(<span class="pl-s"><span class="pl-pds">'</span>body p<span class="pl-pds">'</span></span>, node)</pre></div>
+
+<p>If you are not sure if your target browsers will support such functionality,
+you can always include this little dom4 polyfill.</p>
+
+<h4>
+<a id="first" class="anchor" href="#first" aria-hidden="true"><span class="octicon octicon-link"></span></a>:first</h4>
+
+<p>If a string contains the pseudo selector <code>:first</code> at its end,
+the result will stop at the very first encountered match.</p>
+
+<p>This is the only non standard pseudo-selector implemented.</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// will return only first matched p</span>
+<span class="pl-c">// and the first matched span</span>
+$(<span class="pl-s"><span class="pl-pds">'</span>p:first, span:first<span class="pl-pds">'</span></span>)</pre></div>
+
+<p>This is specially handy in term of performance since 
+the browser will actually stop searching instead of analyzing
+the entire document as it would do via <code>queryAll</code> or <code>querySelectorAll</code>.</p>
+
+<h3>
+<a id="api" class="anchor" href="#api" aria-hidden="true"><span class="octicon octicon-link"></span></a>API</h3>
+
+<p>Every available Array method is provided by <code>$.prototype</code>, and every method
+that would usually return a new Array will return a new QueryResult instead.</p>
+
+<p>Beside that, these are the only 4 core methods:</p>
+
+<ul>
+<li>
+<code>.on(type, handler[, capture])</code> that will invoke <code>addEventListener</code> per each element</li>
+<li>
+<code>.off(type, handler[, capture])</code> that will invoke <code>removeEventListener</code> per each element</li>
+<li>
+<code>.dispatch(type[, initDictionary])</code> that will shortcut <code>CustomEvent</code> initialization and dispatch it per each node</li>
+<li>public static <code>$.extend(name, methodOrDescriptor)</code> that will augment <code>$.prototype</code> using either a method or an ES5 like descriptor to provide the ability to set default properties, as well as getters and setters</li>
+</ul>
+
+<p>Following some example on how to use such API</p>
+
+<div class="highlight highlight-js"><pre><span class="pl-c">// add a listener</span>
+$(<span class="pl-s"><span class="pl-pds">'</span>a:first<span class="pl-pds">'</span></span>).on(<span class="pl-s"><span class="pl-pds">'</span>click<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">e</span>) {
+  e.preventDefault();
+  <span class="pl-c1">alert</span>(e.detail);
+});
+
+<span class="pl-c">// dispatch an event</span>
+$(<span class="pl-s"><span class="pl-pds">'</span>a:first<span class="pl-pds">'</span></span>).dispatch(
+  <span class="pl-s"><span class="pl-pds">'</span>click<span class="pl-pds">'</span></span>,
+  <span class="pl-c">// optional CustomEvent dictionary</span>
+  {detail<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Hello there!<span class="pl-pds">'</span></span>}
+);
+
+<span class="pl-c">// using Array methods</span>
+<span class="pl-k">var</span> newCollection <span class="pl-k">=</span> $(<span class="pl-s"><span class="pl-pds">'</span>.new-nodes<span class="pl-pds">'</span></span>)
+      .<span class="pl-c1">concat</span>(previousCollection)
+      .filter(because)
+      .on(<span class="pl-s"><span class="pl-pds">'</span>custom:event<span class="pl-pds">'</span></span>, react);
+
+
+<span class="pl-c">// extending via method</span>
+$.extend(<span class="pl-s"><span class="pl-pds">'</span>html<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">html</span>) {
+  <span class="pl-k">var</span> el <span class="pl-k">=</span> (<span class="pl-v">this</span>[<span class="pl-c1">0</span>] <span class="pl-k">||</span> {});
+  <span class="pl-k">if</span> (html) el.innerHTML <span class="pl-k">=</span> html;
+  <span class="pl-k">else</span> <span class="pl-k">return</span> el.innerHTML;
+});
+
+
+<span class="pl-c">// extending via descriptor</span>
+$.extend(<span class="pl-s"><span class="pl-pds">'</span>html<span class="pl-pds">'</span></span>, {
+  <span class="pl-en">get</span><span class="pl-k">:</span> <span class="pl-k">function</span> () {
+    <span class="pl-k">return</span> <span class="pl-v">this</span>[<span class="pl-c1">0</span>] <span class="pl-k">&amp;&amp;</span> <span class="pl-v">this</span>[<span class="pl-c1">0</span>].innerHTML;
+  },
+  <span class="pl-en">set</span><span class="pl-k">:</span> <span class="pl-k">function</span> (<span class="pl-smi">html</span>) {
+    <span class="pl-k">if</span> (<span class="pl-v">this</span>.<span class="pl-c1">length</span>) {
+      <span class="pl-v">this</span>[<span class="pl-c1">0</span>].innerHTML <span class="pl-k">=</span> html;
+    }
+  }
+});
+</pre></div>
+
+<h3>
+<a id="compatibility" class="anchor" href="#compatibility" aria-hidden="true"><span class="octicon octicon-link"></span></a>Compatibility</h3>
+
+<p>You can verify by your own through <a href="http://webreflection.github.io/query-result/test/">this page</a> or trust me it's going to work in these browsers:</p>
+
+<h4>
+<a id="desktop" class="anchor" href="#desktop" aria-hidden="true"><span class="octicon octicon-link"></span></a>Desktop</h4>
+
+<ul>
+<li>IE 6 or greater</li>
+<li>Firefox 3 or greater</li>
+<li>Chrome</li>
+<li>Safari</li>
+<li>Opera</li>
+</ul>
+
+<h4>
+<a id="mobile" class="anchor" href="#mobile" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mobile</h4>
+
+<ul>
+<li>Android 2 or greater</li>
+<li>iOS 5 or greater</li>
+<li>UC Browser and UC Mini</li>
+<li>IE9 Mobile or greater</li>
+<li>Opera Mini and Mobile</li>
+<li>Blackberry OS 7 and OS 10</li>
+<li>Kindle Fire</li>
+<li>Ubuntu Phone</li>
+<li>Bada</li>
+<li>Xpress</li>
+<li>webOS</li>
+</ul>
+
+<p>Please note that using polyfill like <a href="https://github.com/WebReflection/dom4#dom4">dom4 polyfill</a> could increase compatibility and reliability of this library.</p>
+
+<h3>
+<a id="how-to-include" class="anchor" href="#how-to-include" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to include</h3>
+
+<p>This little script is available via <a href="https://github.com/WebReflection/query-result/blob/master/build/query-result.node.js">require</a>, <a href="https://github.com/WebReflection/query-result/blob/master/build/query-result.amd.js">AMD</a>, or just <a href="https://github.com/WebReflection/query-result/blob/master/build/query-result.js">plain JS</a> on the global scope.</p>
+
+<p>It is also <a href="https://cdnjs.cloudflare.com/ajax/libs/query-result/0.1.3/query-result.js">available via CDNJS</a></p>
+
+<p>Alternatively, you can use as bootstrap template the <a href="https://github.com/WebReflection/query-result/blob/master/base.html">base.html</a> page which would
+upgrade both JS and DOM environment to the latest standards.</p>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/WebReflection">WebReflection</a> can be found on <a href="https://github.com/WebReflection/query-result">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="https://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
     
   </body>
 </html>
