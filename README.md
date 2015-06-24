@@ -88,13 +88,13 @@ that would usually return a new Array will return a new QueryResult instead.
 
 Beside that, these are the only 4 core methods:
 
-  . `.on(type, handler[, capture])` that will invoke `addEventListener` per each element
+  . `.**on**(type, handler[, capture])` that will invoke `addEventListener` per each element
 
-  . `.off(type, handler[, capture])` that will invoke `removeEventListener` per each element
+  . `.**off**(type, handler[, capture])` that will invoke `removeEventListener` per each element
 
-  . `.dispatch(type[, initDictionary])` that will shortcut `CustomEvent` initialization and dispatch it per each node
+  . `.**dispatch**(type[, initDictionary])` that will shortcut `CustomEvent` initialization and dispatch it per each node
 
-  . public static `$.extend(name, methodOrDescriptor)` that will augment `$.prototype` using either a method or an ES5 like descriptor to provide the ability to set default properties, as well as getters and setters
+  . public static `$.**extend**(name, methodOrDescriptor)` that will augment `$.prototype` using either a method or an ES5 like descriptor to provide the ability to set default properties, as well as getters and setters
 
 
 Following some example on how to use such API
