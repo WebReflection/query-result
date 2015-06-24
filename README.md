@@ -50,7 +50,7 @@ $('input[required]')
 ```
 
 ### Features
-The first basic improvements over most alternative, is the usage of [**query** and **queryAll**](http://www.w3.org/TR/2015/WD-dom-20150428/#elements) methods to query relatively from an element.
+The first basic improvements over most alternative, is the usage of [**query** and **queryAll**](http://www.w3.org/TR/2015/WD-dom-20150428/#elements) methods to query relatively from an element, whenever these are available.
 
 This avoids surprises with selectors that could match elements outside the one we are searching in.
 
@@ -63,6 +63,10 @@ $('body p', node)
 // QuerySelector won't find anything
 $('body p', node)
 ```
+If you are not sure if your target browsers will support such functionality,
+you can always include this little [dom4 polyfill]([dom4 polyfill](https://github.com/WebReflection/dom4#dom4)).
+
+
 
 #### :first
 If a string contains the pseudo selector `:first` at its end,
@@ -160,7 +164,7 @@ You can verify by your own through [this page](http://webreflection.github.io/qu
   . Xpress
   . webOS
 
-Please note that at least [dom4 polyfill](https://github.com/WebReflection/dom4#dom4) is required in order to have latest DOM standards in.
+Please note that using polyfill like [dom4 polyfill](https://github.com/WebReflection/dom4#dom4) could increase compatibility and reliability of this library.
 
 
 
