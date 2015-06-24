@@ -41,6 +41,8 @@ var $ = (function (O, A) {'use strict';
   function search(list, el) {
     for (var
       j, l, tmp,
+      query = el.query || el.querySelector,
+      queryAll = el.queryAll || el.querySelectorAll,
       current,
       nodes, one,
       result = new QueryResult(),
@@ -51,10 +53,10 @@ var $ = (function (O, A) {'use strict';
       current = list[i];
       one = current.slice(-6) === ':first';
       if (one) {
-        tmp = el.querySelector(current.slice(0, -6));
+        tmp = query.call(el, current.slice(0, -6));
         if (tmp) result[t++] = tmp;
       } else {
-        nodes = el.querySelectorAll(current);
+        nodes = queryAll.call(el, current);
         j = 0;
         l = nodes.length;
         while (j < l) result[t++] = nodes[j++];
