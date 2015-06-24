@@ -88,13 +88,10 @@ that would usually return a new Array will return a new QueryResult instead.
 
 Beside that, these are the only 4 core methods:
 
-  . `.on(type, handler[, capture])` that will invoke `addEventListener` per each element
-
-  . `.off(type, handler[, capture])` that will invoke `removeEventListener` per each element
-
-  . `.dispatch(type[, initDictionary])` that will shortcut `CustomEvent` initialization and dispatch it per each node
-
-  . public static `$.extend(name, methodOrDescriptor)` that will augment `$.prototype` using either a method or an ES5 like descriptor to provide the ability to set default properties, as well as getters and setters
+  * `.on(type, handler[, capture])` that will invoke `addEventListener` per each element
+  * `.off(type, handler[, capture])` that will invoke `removeEventListener` per each element
+  * `.dispatch(type[, initDictionary])` that will shortcut `CustomEvent` initialization and dispatch it per each node
+  * public static `$.extend(name, methodOrDescriptor)` that will augment `$.prototype` using either a method or an ES5 like descriptor to provide the ability to set default properties, as well as getters and setters
 
 
 Following some example on how to use such API
@@ -148,40 +145,26 @@ You can verify by your own through [this page](http://webreflection.github.io/qu
 
 #### Desktop
 
-  . IE 6 or greater
-
-  . Firefox 3 or greater
-
-  . Chrome
-
-  . Safari
-
-  . Opera
+  * IE 6 or greater
+  * Firefox 3 or greater
+  * Chrome
+  * Safari
+  * Opera
 
 
 #### Mobile
 
-  . Android 2 or greater
-
-  . iOS 5 or greater
-
-  . UC Browser and UC Mini
-
-  . IE9 Mobile or greater
-
-  . Opera Mini and Mobile
-
-  . Blackberry OS 7 and OS 10
-
-  . Kindle Fire
-
-  . Ubuntu Phone
-
-  . Bada
-
-  . Xpress
-
-  . webOS
+  * Android 2 or greater
+  * iOS 5 or greater
+  * UC Browser and UC Mini
+  * IE9 Mobile or greater
+  * Opera Mini and Mobile
+  * Blackberry OS 7 and OS 10
+  * Kindle Fire
+  * Ubuntu Phone
+  * Bada
+  * Xpress
+  * webOS
 
 Please note that using polyfill like [dom4 polyfill](https://github.com/WebReflection/dom4#dom4) could increase compatibility and reliability of this library.
 
