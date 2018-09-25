@@ -15,9 +15,9 @@ like it's already possible via `CustomEvent` constructor.
 Instead of using some limited, quite obtrusive, and not fully cross platform code like
 [the following one](https://gist.github.com/paulirish/12fb951a8b893a454b32) proposed by Paul Irish, we can use a much better approach, we can subclass Array for real.
 
-Not only this is a technique that will be incrementally available as soon
-as browsers will bring ES6 features in their engines, it also gives us the ability
-to extend such subclass the way we want without modifying global properties and objects,
+Not only is this a technique that will be incrementally available as soon
+as browsers bring ES6 features into their engines, it also gives us the ability
+to extend such subclasses the way we want without modifying global properties and objects,
 keeping the environment clean and friendly.
 
 With `QueryResult` we have backward compatibility down to older IE,
@@ -50,7 +50,7 @@ $('input[required]')
 ```
 
 ### Features
-The first basic improvements over most alternative, is the usage of [**query** and **queryAll**](http://www.w3.org/TR/2015/WD-dom-20150428/#elements) methods to query relatively from an element, whenever these are available.
+The first basic improvements over most alternatives, is the usage of [**query** and **queryAll**](http://www.w3.org/TR/2015/WD-dom-20150428/#elements) methods to query relatively from an element, whenever these are available.
 
 This avoids surprises with selectors that could match elements outside the one we are searching in.
 
@@ -78,7 +78,7 @@ This is the only non standard pseudo-selector implemented.
 // and the first matched span
 $('p:first, span:first')
 ```
-This is specially handy in term of performance since 
+This is especially handy in term of performance since 
 the browser will actually stop searching instead of analyzing
 the entire document as it would do via `queryAll` or `querySelectorAll`.
 
@@ -126,10 +126,10 @@ $.extend('html', function (html) {
 
 // extending via descriptor
 $.extend('html', {
-  get: function () {
+  get () {
     return this[0] && this[0].innerHTML;
   },
-  set: function (html) {
+  set (html) {
     if (this.length) {
       this[0].innerHTML = html;
     }
