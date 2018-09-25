@@ -1,3 +1,4 @@
+'use strict';
 const LOAD = 'load';
 const DOM_CONTENT_LOADED = 'DOMContentLoaded';
 class QueryResult extends Array {}
@@ -59,4 +60,4 @@ $.extend('dispatch', function dispatch(type, init = {}) {
   return this;
 });
 
-export default $;
+Object.defineProperty(exports, '__esModule', {value: true}).default = $;

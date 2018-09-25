@@ -1,18 +1,16 @@
 {
   "version": "0.2.0",
-  "license": "MIT",
+  "license": "ISC",
   "name": "query-result",
   "description": "Rethinking the $",
   "homepage": "https://github.com/WebReflection/query-result",
   "keywords": [
-    "querySelector",
-    "querySelectorAll",
+    "$",
     "jQuery",
     "Zepto",
     "like",
+    "light",
     "lightweight",
-    "Array",
-    "subclass",
     "utility",
     "DOM"
   ],
@@ -24,22 +22,21 @@
     "type": "git",
     "url": "git://github.com/WebReflection/query-result.git"
   },
-  "main": "./build/query-result.node.js",
+  "main": "cjs/index.js",
   "module": "esm/index.js",
+  "unpkg": "min.js",
   "scripts": {
-    "test": "phantomjs testrunner.js",
-    "web": "IP=0.0.0.0 polpetta",
-    "install-global-dev": "node -e '(function(o){for(var k in o)require(\"child_process\").spawn(\"npm\",[\"install\",\"-g\",k+\"@\"+o[k]]).on(\"exit\",console.log.bind(console,k+\"@\"+o[k]));}(require(\"package.json\").globalDevDependencies))'"
-  },
-  "globalDevDependencies": {
-    "uglify-js": "1.x",
-    "jshint": "~2.x",
-    "browserify": "~0.0.0",
-    "watchify": "~0.0.0",
-    "phantomjs": "~0.0.0",
-    "polpetta": "~0.3.x"
+    "build": "npm run cjs && npm run max && npm run min && npm run size",
+    "cjs": "ascjs esm cjs",
+    "max": "rollup -c",
+    "min": "uglifyjs index.js --support-ie8 --comments=/^!/ -c -m -o min.js",
+    "size": "cat min.js | wc -c;gzip -c9 min.js | wc -c;cat min.js | brotli | wc -c && rm -f min.js.br"
   },
   "devDependencies": {
-    "wru": "~0.2.x"
+    "@babel/core": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "ascjs": "^2.5.1",
+    "rollup": "^0.66.2",
+    "rollup-plugin-babel": "^4.0.3"
   }
 }
