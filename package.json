@@ -25,6 +25,7 @@
     "url": "git://github.com/WebReflection/query-result.git"
   },
   "main": "./build/query-result.node.js",
+  "module": "esm/index.js",
   "scripts": {
     "test": "phantomjs testrunner.js",
     "web": "IP=0.0.0.0 polpetta",
