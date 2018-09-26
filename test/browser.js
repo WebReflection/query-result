@@ -3,12 +3,13 @@ if (!console.assert)
 $(function (event) {
   console.assert(!!event, 'ready triggered');
   $(function () {
-    const children = $('p');
+    var children = $('p');
     console.assert(children.length === 2, 'qSA works');
     console.assert($(children).length === 2, 'qr works');
     console.assert($('p:first,a:first').length === 1, 'qS works');
     console.assert(children instanceof $, 'instanceof works');
-    document.documentElement.style.background = '#55FF99';
-    document.body.textContent = 'OK';
+    console.assert(children.map(Object) instanceof $, 'map works');
+    $('html')[0].style.background = '#55FF99';
+    $('body')[0].textContent = 'OK';
   });
 });

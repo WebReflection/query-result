@@ -25,6 +25,7 @@ $(event => {
     tressa.assert($(children).length === 2, 'qr works');
     tressa.assert($('p:first,a:first').length === 1, 'qS works');
     tressa.assert(children instanceof $, 'instanceof works');
+    tressa.assert(children.map(Object) instanceof $, 'map works');
   });
 });
 

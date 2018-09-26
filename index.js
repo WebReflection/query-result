@@ -136,26 +136,6 @@ var $ = (function () {
     return _assertThisInitialized(self);
   }
 
-  function _toConsumableArray(arr) {
-    return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread();
-  }
-
-  function _arrayWithoutHoles(arr) {
-    if (Array.isArray(arr)) {
-      for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) arr2[i] = arr[i];
-
-      return arr2;
-    }
-  }
-
-  function _iterableToArray(iter) {
-    if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
-  }
-
-  function _nonIterableSpread() {
-    throw new TypeError("Invalid attempt to spread non-iterable instance");
-  }
-
   /**
    * ISC License
    *
@@ -173,9 +153,6 @@ var $ = (function () {
    * OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
    * PERFORMANCE OF THIS SOFTWARE.
    */
-  var LOAD = 'load';
-  var DOM_CONTENT_LOADED = 'DOMContentLoaded';
-
   var QueryResult =
   /*#__PURE__*/
   function (_Array) {
@@ -190,74 +167,86 @@ var $ = (function () {
     return QueryResult;
   }(_wrapNativeSuper(Array));
 
+  var create = Object.create,
+      defineProperty = Object.defineProperty;
+  var AP = Array.prototype;
+  var DOM_CONTENT_LOADED = 'DOMContentLoaded';
+  var LOAD = 'load';
+  var NO_TRANSPILER_ISSUES = new QueryResult() instanceof QueryResult;
+  var QRP = QueryResult.prototype; // fixes methods returning non QueryResult
+
+  /* istanbul ignore if */
+
+  if (!NO_TRANSPILER_ISSUES) Object.getOwnPropertyNames(AP).forEach(function (name) {
+    var desc = Object.getOwnPropertyDescriptor(AP, name);
+
+    if (typeof desc.value === 'function') {
+      var fn = desc.value;
+
+      desc.value = function () {
+        var result = fn.apply(this, arguments);
+        return result instanceof Array ? patch(result) : result;
+      };
+    }
+
+    defineProperty(QRP, name, desc);
+  }); // fixes badly transpiled classes
+
+  var patch = NO_TRANSPILER_ISSUES ? function (qr) {
+    return qr;
+  } :
+  /* istanbul ignore next */
+  function (qr) {
+    var nqr = create(QRP);
+    push.apply(nqr, slice(qr));
+    return nqr;
+  };
+  var push = AP.push;
+
   var search = function search(list, el) {
     var nodes = [];
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
+    var length = list.length;
 
-    try {
-      for (var _iterator = list[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var CSS = _step.value;
-        var css = CSS.trim();
+    for (var i = 0; i < length; i++) {
+      var css = list[i].trim();
 
-        if (css.slice(-6) === ':first') {
-          var node = el.querySelector(css.slice(0, -6));
-          if (node) nodes.push(node);
-        } else {
-          var _iteratorNormalCompletion2 = true;
-          var _didIteratorError2 = false;
-          var _iteratorError2 = undefined;
-
-          try {
-            for (var _iterator2 = el.querySelectorAll(css)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-              var _node = _step2.value;
-              nodes.push(_node);
-            }
-          } catch (err) {
-            _didIteratorError2 = true;
-            _iteratorError2 = err;
-          } finally {
-            try {
-              if (!_iteratorNormalCompletion2 && _iterator2.return != null) {
-                _iterator2.return();
-              }
-            } finally {
-              if (_didIteratorError2) {
-                throw _iteratorError2;
-              }
-            }
-          }
-        }
-      }
-    } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion && _iterator.return != null) {
-          _iterator.return();
-        }
-      } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
-        }
-      }
+      if (css.slice(-6) === ':first') {
+        var node = el.querySelector(css.slice(0, -6));
+        if (node) push.call(nodes, node);
+      } else push.apply(nodes, slice(el.querySelectorAll(css)));
     }
 
     return _construct(QueryResult, nodes);
   };
 
-  var defineProperty = Object.defineProperty;
-  var $ = defineProperty(function (CSS) {
+  var slice = NO_TRANSPILER_ISSUES ? patch :
+  /* istanbul ignore next */
+  function (all) {
+    // do not use slice.call(...) due old IE gotcha
+    var nodes = [];
+    var length = all.length;
+
+    for (var i = 0; i < length; i++) {
+      nodes[i] = all[i];
+    }
+
+    return nodes;
+  }; // use function to avoid usage of Symbol.hasInstance
+  // (broken in older browsers anyway)
+
+  var $ = function $(CSS) {
     var parent = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document;
 
     switch (_typeof(CSS)) {
       case 'string':
-        return search(CSS.split(','), parent);
+        return patch(search(CSS.split(','), parent));
 
       case 'object':
-        return _construct(QueryResult, _toConsumableArray('nodeType' in CSS || 'postMessage' in CSS ? [CSS] : CSS));
+        // needed to avoid iterator dance (breaks in older IEs)
+        var nodes = [];
+        var all = 'nodeType' in CSS || 'postMessage' in CSS ? [CSS] : CSS;
+        push.apply(nodes, slice(all));
+        return patch(_construct(QueryResult, nodes));
 
       case 'function':
         var $parent = $(parent);
@@ -277,98 +266,43 @@ var $ = (function () {
         });
         return $;
     }
-  }, Symbol.hasInstance, {
-    value: function value(instance) {
-      return instance instanceof QueryResult;
-    }
-  });
+  };
+
+  $.prototype = QRP;
 
   $.extend = function (key, value) {
-    return defineProperty(QueryResult.prototype, key, {
+    return defineProperty(QRP, key, {
       configurable: true,
       value: value
     }), $;
-  };
+  }; // dropped usage of for-of to avoid broken iteration dance in older IEs
+
 
   $.extend('dispatch', function dispatch(type) {
     var init = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var event = new CustomEvent(type, init);
-    var _iteratorNormalCompletion3 = true;
-    var _didIteratorError3 = false;
-    var _iteratorError3 = undefined;
+    var length = this.length;
 
-    try {
-      for (var _iterator3 = this[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-        var node = _step3.value;
-        node.dispatchEvent(event);
-      }
-    } catch (err) {
-      _didIteratorError3 = true;
-      _iteratorError3 = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion3 && _iterator3.return != null) {
-          _iterator3.return();
-        }
-      } finally {
-        if (_didIteratorError3) {
-          throw _iteratorError3;
-        }
-      }
+    for (var i = 0; i < length; i++) {
+      this[i].dispatchEvent(event);
     }
 
     return this;
   }).extend('off', function off(type, handler) {
     var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-    var _iteratorNormalCompletion4 = true;
-    var _didIteratorError4 = false;
-    var _iteratorError4 = undefined;
+    var length = this.length;
 
-    try {
-      for (var _iterator4 = this[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-        var node = _step4.value;
-        node.removeEventListener(type, handler, options);
-      }
-    } catch (err) {
-      _didIteratorError4 = true;
-      _iteratorError4 = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion4 && _iterator4.return != null) {
-          _iterator4.return();
-        }
-      } finally {
-        if (_didIteratorError4) {
-          throw _iteratorError4;
-        }
-      }
+    for (var i = 0; i < length; i++) {
+      this[i].removeEventListener(type, handler, options);
     }
 
     return this;
   }).extend('on', function on(type, handler) {
     var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-    var _iteratorNormalCompletion5 = true;
-    var _didIteratorError5 = false;
-    var _iteratorError5 = undefined;
+    var length = this.length;
 
-    try {
-      for (var _iterator5 = this[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-        var node = _step5.value;
-        node.addEventListener(type, handler, options);
-      }
-    } catch (err) {
-      _didIteratorError5 = true;
-      _iteratorError5 = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion5 && _iterator5.return != null) {
-          _iterator5.return();
-        }
-      } finally {
-        if (_didIteratorError5) {
-          throw _iteratorError5;
-        }
-      }
+    for (var i = 0; i < length; i++) {
+      this[i].addEventListener(type, handler, options);
     }
 
     return this;
