@@ -10,7 +10,7 @@
     "Zepto",
     "like",
     "light",
-    "lightweight",
+    "modern",
     "utility",
     "DOM"
   ],
@@ -26,17 +26,22 @@
   "module": "esm/index.js",
   "unpkg": "min.js",
   "scripts": {
-    "build": "npm run cjs && npm run max && npm run min && npm run size",
+    "build": "npm run cjs && npm run max && npm run min && npm run size && npm run test",
     "cjs": "ascjs esm cjs",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
     "max": "rollup -c",
-    "min": "uglifyjs index.js --support-ie8 --comments=/^!/ -c -m -o min.js",
-    "size": "cat min.js | wc -c;gzip -c9 min.js | wc -c;cat min.js | brotli | wc -c && rm -f min.js.br"
+    "min": "echo '/*! (c) Andrea Giammarchi - ISC */'>tmp.js && cat index.js >> tmp.js && uglifyjs tmp.js --support-ie8 --comments=/^!/ -c -m -o min.js && rm tmp.js",
+    "size": "cat min.js | wc -c;gzip -c9 min.js | wc -c;cat min.js | brotli | wc -c && rm -f min.js.br",
+    "test": "istanbul cover test/index.js"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
     "@babel/preset-env": "^7.1.0",
     "ascjs": "^2.5.1",
+    "basichtml": "^0.19.0",
+    "istanbul": "^0.4.5",
     "rollup": "^0.66.2",
-    "rollup-plugin-babel": "^4.0.3"
+    "rollup-plugin-babel": "^4.0.3",
+    "tressa": "^0.3.1"
   }
 }
