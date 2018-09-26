@@ -1,11 +1,11 @@
 QueryResult, rethinking the `$()`
 =================================
 
-[![build status](https://secure.travis-ci.org/WebReflection/query-result.png)](http://travis-ci.org/WebReflection/query-result)
+[![Build Status](https://travis-ci.org/WebReflection/query-result.svg?branch=master)](https://travis-ci.org/WebReflection/query-result) [![Coverage Status](https://coveralls.io/repos/github/WebReflection/query-result/badge.svg?branch=master)](https://coveralls.io/github/WebReflection/query-result?branch=master)
 
 ### In a nutshell
 
-This model is a modern, minimal, 60LOC (esm) based version of a jQuery_ish_ utility.
+This model is a modern, minimal, 60LOC (esm) based version of a jQuery<sup><sub>(_ish_)</sub></sup> utility.
 
 #### Features:
 
