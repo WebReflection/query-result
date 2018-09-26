@@ -16,7 +16,7 @@ This model is a modern, minimal, 60LOC (esm) based version of a jQuery<sup><sub>
   * `any instanceof $` to know if an object implements all `QueryResult` methods
   * `$.extend(name, function () { ... })` to pollute the `QueryResult` prototype
   * `$(...).on(type, handler, options)` to add listeners to all entries
-  * `$(...).off(type, handler, options)` to remove listeners to all entries
+  * `$(...).off(type, handler, options)` to remove listeners from all entries
   * `$(...).dispatch(type, initDictionary)` to dispatch a `CustomEvent` to all entries
 
 Everything else can be added via `$.extend(methodName, function () {})`,
@@ -48,7 +48,7 @@ $(event => {
 If a string contains the pseudo selector `:first` at its end,
 the result will stop at the very first encountered match.
 
-This is the only non standard pseudo-selector implemented.
+This is the only non-standard pseudo-selector implemented.
 ```js
 // will return only first matched p
 // and the first matched span
@@ -56,7 +56,7 @@ $('p:first, span:first')
 ```
 This is especially handy in term of performance since 
 the browser will actually stop searching instead of analyzing
-the entire document through `querySelector` instead of `querySelectorAll`.
+the entire document (using `querySelector` instead of `querySelectorAll`).
 
 ### Examples
 
@@ -104,10 +104,10 @@ $.extend('html', {
 ```
 
 ### Compatibility
-You can verify by your own through [this page](http://webreflection.github.io/query-result/test/) but it should work down to very old browsers.
+You can verify by yourself through [this page](http://webreflection.github.io/query-result/test/) but it should work down to very old browsers.
 
 ### How to include
 
   * `import $ from 'query-result'` for ESM (`query-result/esm/index.js` explicitly)
-  * `cont $ = require('query-result/cjs')` for CJS
+  * `const $ = require('query-result/cjs')` for CJS
   * `<script src="min.js"></script>` for browsers as global `$`
