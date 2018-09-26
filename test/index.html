@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Your Web Page Title</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Standard W3C timers for IE9 and lower -->
+    <!--[if lte IE 9]>
+      <script>(function(f){window.setTimeout=f(window.setTimeout);window.setInterval=f(window.setInterval)})(function(f){return function(c,t){var a=[].slice.call(arguments,2);return f(function(){c.apply(this,a)},t)}});</script>
+    <![endif]-->
+
+    <!-- DOM Level 2 and part of 3 normalizer for IE8 only -->
+    <!--[if IE 8]><script src="https://unpkg.com/ie8@latest"></script><![endif]-->
+
+    <!-- document.ready(callback) to fix DOMContentLoaded quirks and problems once for all
+    CSP sha1
+      sha1-eBQ1Q8PXgJUyhZkfz74UbgIiXVU=
+      sha256-vH9D1F+qE1rzno3CTuRysTTkgXtjA5PN2SbMkBH4Z/I=
+    -->
+    <!--script>!function(r,e,a,d,y){function $(f){d?f():r.push(f)}e.ready=$;e.addEventListener(a,y=function(){d=!e.removeEventListener(a,y,d);while(y=r.shift())y()},d)}([],document,'DOMContentLoaded',!1);</script-->
+
+    <!-- DOM Level 4 and Level 3 normalizer -->
+    <script src="https://unpkg.com/dom4@latest" defer></script>
+
+    <!-- Custom Elements IE8 Only Fix -->
+    <!--[if IE 8]><script src="https://unpkg.com/document-register-element@latest/build/dre-ie8-upfront-fix.js" defer></script><![endif]-->
+
+    <!-- Custom Elements -->
+    <script src="https://unpkg.com/document-register-element@latest" defer></script>
+
+    <!-- ES5 Polyfill for non-evergreen browsers -->
+    <script>/* IE8 and very old browsers only */Function.bind||(function(s){document.write([
+      '<script src="' + s + 'es5-shim.min.js" defer><',
+      '<script src="' + s + 'es5-sham.min.js" defer><',
+    ''].join('/script>'))}('//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.1.7/'));</script>
+
+    <!-- QueryResult as $ function -->
+    <script src="../min.js" defer></script>
+
+    <!-- from now on, any script and through defer.
+        CSS can come later on or through a script as well -->
+    <script src="browser.js" defer></script>
+  </head>
+  <body>
+    <p>1</p><p>2</p>
+  </body>
+</html>
